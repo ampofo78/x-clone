@@ -30,20 +30,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || "Internal server error" });
 });
 
-//app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/api/health", (req, res) => {
+  return res.status(200).json({ status: "ok" });
+});
 
 const startServer = async () => {
   try {
     await connectDb();
-    if (ENV.NODE_ENV !== "production") {
-      app.listen(ENV.PORT, () =>
-        console.log(`Example app listening on port ${ENV.PORT}!`),
-      );
-    }
+
+    app.listen(ENV.PORT, () =>
+      console.log(`Example app listening on port ${ENV.PORT}!`),
+    );
   } catch (error) {
     console.log("there is error in starting server", error.message);
     process.exit(1);
   }
 };
+
 startServer();
-export default app;
