@@ -3,7 +3,6 @@ import cors from "cors";
 import express from "express";
 import userRoutes from "../src/Routes/user.route.js";
 import { connectDb } from "./config/db.js";
-import { ENV } from "./config/env.js";
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 import commentRoutes from "./Routes/comment.route.js";
 import notificationRoutes from "./Routes/notification.route.js";
@@ -30,17 +29,15 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || "Internal server error" });
 });
 
-app.get("/api/health", (req, res) => {
-  return res.status(200).json({ status: "ok" });
+//app.get("/api/health", (req, res) => {
+// return res.status(200).json({ status: "ok" });
+//});
+app.get("/", (req, res) => {
+  return res.send("Hello from server");
 });
-
 const startServer = async () => {
   try {
     await connectDb();
-
-    app.listen(ENV.PORT, () =>
-      console.log(`Example app listening on port ${ENV.PORT}!`),
-    );
   } catch (error) {
     console.log("there is error in starting server", error.message);
     process.exit(1);
@@ -48,3 +45,4 @@ const startServer = async () => {
 };
 
 startServer();
+export default app;
