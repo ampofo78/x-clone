@@ -3,6 +3,7 @@ import cors from "cors";
 import express from "express";
 import userRoutes from "../src/Routes/user.route.js";
 import { connectDb } from "./config/db.js";
+import { ENV } from "./config/env.js";
 import { arcjetMiddleware } from "./middleware/arcjet.middleware.js";
 import commentRoutes from "./Routes/comment.route.js";
 import notificationRoutes from "./Routes/notification.route.js";
@@ -38,6 +39,9 @@ app.get("/", (req, res) => {
 const startServer = async () => {
   try {
     await connectDb();
+    if (ENV.NODE_ENV !== "production") {
+      app.listen(ENV.PORT);
+    }
   } catch (error) {
     console.log("there is error in starting server", error.message);
     process.exit(1);
